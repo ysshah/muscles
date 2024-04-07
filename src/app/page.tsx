@@ -1,16 +1,10 @@
-export default function Home() {
-  return (
-    <div className="h-screen flex flex-column items-center">
-      <table className="table">
-        <tbody>
-          <tr>
-            <td>Hello</td>
-            <td>Hello</td>
-            <td>Hello</td>
-            <td>Hello</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  )
+import { kv } from '@vercel/kv'
+import Table from './table'
+
+export default async function Home() {
+
+  const records = await kv.hgetall<Record<string, string>>('activities')
+  const muscles = Object.entries(records!).map(([muscle, last]) => ({muscle, last}))
+
+  return <Table muscles={muscles} />
 }
