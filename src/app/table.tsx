@@ -1,19 +1,28 @@
 'use client'
 
-import { useState } from "react"
-import Muscle from "./muscle"
+import { useState } from 'react'
+import MuscleRow from './muscle'
+import { Toaster } from 'react-hot-toast'
+import { Muscle, compare } from './util'
 
-export default function Table({muscles}: {muscles: {muscle:string, last:string}[]}) {
-  const [message, setMessage] = useState('')
-
-  const rows = muscles.map(props => <Muscle key={props.muscle} {...props} setMessage={setMessage}></Muscle>)
+export default function Table({ musclesProp }: { musclesProp: Muscle[] }) {
+  const [muscles, setMuscles] = useState(musclesProp)
+  const rows = muscles
+    .toSorted(compare)
+    .map((props) => <MuscleRow key={props.muscle} {...props} setMuscles={setMuscles} />)
 
   return (
-    <div className="h-screen flex flex-column items-center">
+    <div className="h-svh flex flex-column items-center">
       <table className="table">
         <tbody>{rows}</tbody>
       </table>
-      {message !== '' && <div className="fixed bottom-2">{message}</div>}
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          className: 'bg-base-100 color-base-content',
+          style: { background: 'inherit', color: 'inherit' },
+        }}
+      />
     </div>
   )
 }

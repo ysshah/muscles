@@ -6,5 +6,5 @@ export default async function Home() {
   const records = await kv.hgetall<Record<string, string>>('activities')
   const muscles = Object.entries(records!).map(([muscle, last]) => ({muscle, last}))
 
-  return <Table muscles={muscles} />
+  return <Table musclesProp={muscles} />
 }
