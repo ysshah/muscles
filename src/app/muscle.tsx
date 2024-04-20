@@ -40,7 +40,7 @@ export default function MuscleRow({
         <input
           type="date"
           className="input input-bordered input-sm appearance-none"
-          defaultValue={last}
+          value={last}
           onChange={(e) => setDate(e.target.value)}
         />
       </td>
