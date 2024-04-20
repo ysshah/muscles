@@ -16,22 +16,27 @@ export default function MuscleRow({
   function setDate(last: string) {
     console.log('Setting date: %s', last)
     setMuscles((prev) => prev.map((m) => (m.muscle === muscle ? { muscle, last } : m)))
-    toast.promise(fetch('/api/update', { method: 'POST' }), {
-      loading: 'Updating...',
-      success: 'Updated.',
-      error: 'Could not save date!',
-    })
+    toast.promise(
+      fetch('/api/muscles', { method: 'POST', body: JSON.stringify({ muscle, last }) }).then(
+        (res) => res.json()
+      ),
+      {
+        loading: 'Updating...',
+        success: 'Updated.',
+        error: 'Could not save date!',
+      }
+    )
   }
 
   return (
     <tr>
-      <td className='pr-2'>{muscle}</td>
-      <td className='px-2'>
+      <td className="pr-2">{muscle}</td>
+      <td className="px-2">
         <button className="btn btn-sm" onClick={() => setDate(today)}>
           Today
         </button>
       </td>
-      <td className='px-2 text-center'>
+      <td className="px-2 text-center">
         <input
           type="date"
           className="input input-bordered input-sm appearance-none"
@@ -39,7 +44,7 @@ export default function MuscleRow({
           onChange={(e) => setDate(e.target.value)}
         />
       </td>
-      <td className='pl-2 text-center'>{daysSince(last)}</td>
+      <td className="pl-2 text-center">{daysSince(last)}</td>
     </tr>
   )
 }
