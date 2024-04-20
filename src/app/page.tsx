@@ -2,16 +2,23 @@
 
 import { useEffect, useState } from 'react'
 import MuscleRow from './muscle'
-import { Toaster } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 import { Muscle, compare } from './util'
 
 export default function Home() {
   const [muscles, setMuscles] = useState<Muscle[]>([])
 
   useEffect(() => {
-    fetch('/api/muscles')
-      .then((res) => res.json())
-      .then((muscles) => setMuscles(muscles))
+    toast.promise(
+      fetch('/api/muscles')
+        .then((res) => res.json())
+        .then((muscles) => setMuscles(muscles)),
+      {
+        loading: 'Loading...',
+        success: 'Loaded.',
+        error: 'Could not load muscles!',
+      }
+    )
   }, [])
 
   const rows = muscles
