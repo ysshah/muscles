@@ -1,10 +1,11 @@
 'use client'
 
+import { update } from '@/lib/actions'
 import { Dispatch, SetStateAction } from 'react'
 import toast from 'react-hot-toast'
-import { Muscle, daysSince, today } from './util'
+import { Muscle, daysSince, today } from '../lib/util'
 
-export default function MuscleRow({
+export default function Row({
   muscle,
   last,
   setMuscles,
@@ -13,19 +14,13 @@ export default function MuscleRow({
   last: string
   setMuscles: Dispatch<SetStateAction<Muscle[]>>
 }) {
-  function setDate(last: string) {
-    console.log('Setting date: %s', last)
+  async function setDate(last: string) {
     setMuscles((prev) => prev.map((m) => (m.muscle === muscle ? { muscle, last } : m)))
-    toast.promise(
-      fetch('/api/muscles', { method: 'POST', body: JSON.stringify({ muscle, last }) }).then(
-        (res) => res.json()
-      ),
-      {
-        loading: 'Updating...',
-        success: 'Updated.',
-        error: 'Could not save date!',
-      }
-    )
+    toast.promise(update(muscle, last), {
+      loading: 'Updating...',
+      success: 'Updated.',
+      error: 'Could not save date!',
+    })
   }
 
   return (

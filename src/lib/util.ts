@@ -6,7 +6,7 @@ export interface Muscle {
 }
 
 export function compare(m1: Muscle, m2: Muscle) {
-  return compareAsc(toDate(m1.last), toDate(m2.last))
+  return compareAsc(toDate(m1.last), toDate(m2.last)) || m1.muscle.localeCompare(m2.muscle)
 }
 
 export function daysSince(date: string) {
