@@ -1,19 +1,16 @@
-import { compareAsc, format, formatDistanceToNowStrict, toDate } from 'date-fns'
+import { compareAsc, differenceInDays, format, parseISO } from 'date-fns'
 
-export interface Muscle {
+export type Muscle = {
   muscle: string
   last: string
 }
 
-export function compare(m1: Muscle, m2: Muscle) {
-  return compareAsc(toDate(m1.last), toDate(m2.last)) || m1.muscle.localeCompare(m2.muscle)
+export function compare(m1: Muscle, m2: Muscle): number {
+  return compareAsc(parseISO(m1.last), parseISO(m2.last)) || m1.muscle.localeCompare(m2.muscle)
 }
 
-export function daysSince(date: string) {
-  return formatDistanceToNowStrict(toDate(date), {
-    unit: 'day',
-    roundingMethod: 'floor',
-  }).split(' ')[0]
+export function daysSince(date: string): number {
+  return differenceInDays(new Date(), parseISO(date))
 }
 
 export const today = format(new Date(), 'yyyy-MM-dd')
